@@ -52,28 +52,51 @@ class BinarySearchTree {
   }
 
   remove(data) {
-    // let currentNode = this.rootNode;
-    // let prevNode = null;
+    this.rootNode = removeNode(this.rootNode, data);
 
-    // while(currentNode) {
-    //   if (data === currentNode.data) {
-    //     // if (prevNode) {
-    //     //   const leftNode = currentNode.left;
-    //     //   const rightNode = currentNode.right;
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }
 
-    //     //   currentNode = prevNode;
-    //     //   prevNode.right = rightNode;
-    //     //   rightNode.left = leftNode;
-    //     // }
+      if (node.data === data) {
+        // If node has no children
+        if (!node.left && !node.right) {
+          return null;
+        }
 
-    //     if (!currentNode.left && !currentNode.right) {
+        // If node has one child
+        if (!node.left) {
+          node = node.right;
+          return node; 
+        }
 
-    //     }  
-    //   } else {
-    //     prevNode = currentNode;
-    //     currentNode = data > currentNode.data ? currentNode.right : currentNode.left;
-    //   }
-    // }
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+
+        // If node has two children
+        let minNode = node.right;
+
+        while(minNode.left) {
+          minNode = minNode.left;
+        }
+
+        node.data = minNode.data;
+        node.right = removeNode(node.right, minNode.value);
+
+        return node;
+      }
+
+      if (data > node.data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        node.left = removeNode(node.left, data);
+        return node;
+      }
+    }
   }
 
   min() {
@@ -104,19 +127,3 @@ class BinarySearchTree {
 module.exports = {
   BinarySearchTree
 };
-
-
-const tree = new BinarySearchTree();
-
-tree.add(5);
-tree.add(2);
-tree.add(9);
-tree.add(7);
-tree.add(10);
-console.log(tree.root());
-console.log(tree.has(12));
-console.log(tree.find(9));
-console.log(tree.min());
-console.log(tree.max());
-
-
