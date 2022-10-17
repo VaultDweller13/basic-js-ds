@@ -15,23 +15,23 @@ const { NotImplementedError, ListNode } = require('../extensions/index.js');
  */
 class Queue {
   constructor() {
-    // this.queue = [];
     this.firstNode = null;
+    this.lastNode = null;
   }
 
   getUnderlyingList() {
-  //  return this.queue.map(node => { return {value: node.value, next: node.next} });
-    return this.firstNode;
+    return {value: this.firstNode.value, next: this.firstNode.next};
   }
 
   enqueue(value) {
     const node = new ListNode(value);
-    // const prevNode = this.queue[this.queue.length - 1]; 
-    // if (prevNode) prevNode.next = node;
-    // this.queue.push(node);
     if (!this.firstNode) {
       this.firstNode = node;
-    } else this.firstNode.next = node;
+    } else {
+      this.lastNode.next = node;
+    }
+
+    this.lastNode = node;
   }
 
   dequeue() {
